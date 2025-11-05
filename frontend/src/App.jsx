@@ -11,6 +11,7 @@ import PageLoder from "./component/PageLoder.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
 import Layout from "./component/Layout.jsx";
 import { useThemeStore } from "./Store/useThemeStore.js";
+import FriendElement from "./pages/FriendElement.jsx";
 
 const App = () => {
   const { authUser, isLoading } = useAuthUser();
