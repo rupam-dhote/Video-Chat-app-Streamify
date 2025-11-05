@@ -3,6 +3,7 @@ import { getUserFriends } from "../lib/api";
 import FriendCard from "../component/FriendCard";
 import NoFriends from "../component/NoFriends";
 import { UserIcon } from "lucide-react";
+import { Link } from "react-router";
 
 const FriendElement = () => {
   const { isLoading: friendsLoading, data: friendsData = [] } = useQuery({
