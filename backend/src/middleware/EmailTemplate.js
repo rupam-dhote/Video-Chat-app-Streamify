@@ -249,11 +249,28 @@ export const Reset_Password_Email_Template = `
             margin: 0 0 15px;
             text-align: justify;
         }
+        .logo-box img {
+              width: 80px;
+              height: auto;
+              display: block;
+              margin: 0 auto;
+          }
+
+          .logo-text {
+              font-size: 20px;
+              font-weight: bold;
+              margin-top: 8px;
+              color: #333;
+          }
     </style>
 </head>
 
 <body>
     <div class="container">
+         <div class="logo-box">
+              <img src="https://video-chat-app-streamify.onrender.com/logo-streamify.png">
+              <div class="logo-text">Streamify</div>
+          </div>
         <div class="header">Reset Your Password</div>
         <div class="content">
             <p>Hello, {name}</p>
