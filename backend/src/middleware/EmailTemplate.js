@@ -250,6 +250,8 @@ export const Reset_Password_Email_Template = `
             text-align: justify;
         }
          .logo-box{
+           padding:1rem;
+           width:100vw;
            display:flex;
            flex-direction:row;
            justify-content:center;
