@@ -254,12 +254,12 @@ export const Reset_Password_Email_Template = `
            flex-direction:row;
            justify-content:center;
            gap:2rem;
+           background: linear-gradient(135deg, #5b8dfd, #7b5cff);
          }   
         .logo-box img {
-              width: 80px;
+              width: 50px;
               height: auto;
               display: block;
-              margin: 0 auto;
           }
 
           .logo-text {
