@@ -179,7 +179,7 @@ const OtpVerification = ({
                 </button>
               </div>
             ) : (
-              <p className=" text-sm md:text-base">OTP expires in 30 minutes</p>
+              <p className=" text-sm md:text-base">OTP expires in 5 minutes</p>
             )}
           </div>
         </div>
