@@ -5,7 +5,6 @@ export const getAuthUser = async () => {
     const res = await axiosInstance.get("/auth/me");
     return res.data;
   } catch (err) {
-    console.log("ERROR In GetAuthUSER:", err);
     return null;
   }
 };
@@ -69,5 +68,28 @@ export const acceptFriendReq = async (friendId) => {
 
 export const getStreamToken = async () => {
   const res = await axiosInstance.get("/chat/token");
+  return res.data;
+};
+
+export const verifyEmail = async (data) => {
+  const res = await axiosInstance.post("/auth/verify-email", data);
+  return res.data;
+};
+
+export const sendForgotCode = async (data) => {
+  const res = await axiosInstance.post("/auth/forgot-password", data);
+  return res.data;
+};
+export const verifyForgotCode = async (data) => {
+  const res = await axiosInstance.post("/auth/forgot-password-verify", data);
+  return res.data;
+};
+export const changePassword = async (data) => {
+  const res = await axiosInstance.put("/auth/forgot-password-change", data);
+  return res.data;
+};
+
+export const resetPasswordUser = async (data) => {
+  const res = await axiosInstance.put("/user/change-password", data);
   return res.data;
 };

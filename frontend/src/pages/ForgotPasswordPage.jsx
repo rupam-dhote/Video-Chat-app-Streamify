@@ -1,16 +1,16 @@
-import { useState } from "react";
 import { LifeBuoy } from "lucide-react";
-import { Link } from "react-router";
+import OtpVerification from "../component/OtpVerification";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { changePassword, sendForgotCode, verifyForgotCode } from "../lib/api";
 import toast from "react-hot-toast";
-import { loginToServer, verifyEmail } from "../lib/api.js";
-import useRefetch from "../hooks/useRefetch.js";
-import OtpVerification from "../component/OtpVerification.jsx";
+import ChangePassword from "../component/ChangePassword.jsx";
 
-const LoginPage = () => {
-  const [loginData, setLoginData] = useState({
+const ForgotPasswordPage = () => {
+  const navigate = useNavigate();
+  const [forgotData, setForgotData] = useState({
     email: "",
-    password: "",
   });
 
   const [verifyEmailData, setVerifyData] = useState({
@@ -18,71 +18,89 @@ const LoginPage = () => {
     otp: "",
   });
 
-  const [formStep, setFormStep] = useState(false);
-  // next
-  const refetchMe = useRefetch();
+  const [formStep, setFormStep] = useState({ first: false, second: false });
 
   const {
-    mutate: loginMutate,
-    isPending: loginPending,
-    error: loginError,
+    mutate: sendCodeMutate,
+    isPending: codePending,
+    error: codeError,
   } = useMutation({
-    mutationFn: loginToServer,
+    mutationFn: sendForgotCode,
     onSuccess: (res) => {
       toast.success(res.message);
-      if (res?.user?.isVerified) {
-        setLoginData({
-          email: "",
-          password: "",
-        });
-        refetchMe("authUser");
-      } else {
-        setVerifyData({
-          ...verifyEmailData,
-          email: loginData.email,
-        });
-        setFormStep(true);
-      }
+      setVerifyData({
+        ...verifyEmailData,
+        email: forgotData.email,
+      });
+      setFormStep({
+        ...formStep,
+        first: true,
+      });
     },
     onError: (err) => {
       toast.error(`${err.response.data.message}. Please try again!`);
-      console.log(err?.response?.data);
+      console.error(err?.response?.data);
     },
   });
 
   const {
-    mutate: emailMutate,
+    mutate: verifyEmailMutate,
     isPending: emailPending,
     error: emailError,
   } = useMutation({
-    mutationFn: verifyEmail,
+    mutationFn: verifyForgotCode,
     onSuccess: (res) => {
       toast.success(res.message);
-      setLoginData({
-        email: "",
-        password: "",
+      setFormStep({
+        first: false,
+        second: true,
       });
-      setFormStep(false);
+    },
+    onError: (err) => {
+      toast.error(`${err.response.data.message}. Please try again!`);
+      console.error(err?.response?.data);
+    },
+  });
+
+  const {
+    mutate: changePasswordMutate,
+    isPending: changePending,
+    error: changeError,
+  } = useMutation({
+    mutationFn: changePassword,
+    onSuccess: (res) => {
+      toast.success(res.message);
+      setFormStep({
+        first: false,
+        second: false,
+      });
+      setForgotData({
+        email: "",
+      });
       setVerifyData({
         email: "",
         otp: "",
       });
-      refetchMe("authUser");
+      navigate("/login");
     },
+
     onError: (err) => {
       toast.error(`${err.response.data.message}. Please try again!`);
-      console.log(err?.response?.data);
+      console.error(err?.response?.data);
     },
   });
 
-  const handleLogin = (e) => {
+  const handleSendCode = (e) => {
     e.preventDefault();
-    loginMutate(loginData);
+    sendCodeMutate(forgotData);
   };
 
   const handleVerifyEmail = (e) => {
     e.preventDefault();
-    emailMutate(verifyEmailData);
+    verifyEmailMutate(verifyEmailData);
+  };
+  const handleChangePassword = (playload) => {
+    changePasswordMutate(playload);
   };
   return (
     <div
@@ -101,34 +119,48 @@ const LoginPage = () => {
             </span>
           </div>
           {/* error if any occures */}
-          {formStep
+          {formStep.first
             ? emailError && (
                 <div className="alert alert-error mb-4">
                   <span>{emailError?.response?.data?.message}</span>
                 </div>
               )
-            : loginError && (
+            : formStep.second
+            ? changeError && (
                 <div className="alert alert-error mb-4">
-                  <span>{loginError?.response?.data?.message}</span>
+                  <span>{changeError?.response?.data?.message}</span>
+                </div>
+              )
+            : codeError && (
+                <div className="alert alert-error mb-4">
+                  <span>{codeError?.response?.data?.message}</span>
                 </div>
               )}
 
           <div className="w-full">
-            {formStep ? (
+            {formStep.first ? (
               <OtpVerification
-                setVerifyData={setVerifyData}
-                emailPending={emailPending}
                 handleVerifyEmail={handleVerifyEmail}
+                emailPending={emailPending}
+                setVerifyData={setVerifyData}
                 verifyEmailData={verifyEmailData}
-                length={6}
+              />
+            ) : formStep.second ? (
+              <ChangePassword
+                handleChangePassword={handleChangePassword}
+                userMail={verifyEmailData.email}
+                changePending={changePending}
               />
             ) : (
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleSendCode}>
                 <div className="space-y-4">
                   <div>
-                    <h2 className="text-xl font-semibold">Welcome Back</h2>
+                    <h2 className="text-xl font-semibold mb-2">
+                      Forgot Password?
+                    </h2>
                     <p className="text-sm opacity-70">
-                      Sign in to your account to continue your language journey!
+                      Enter your registered email address below, and we’ll send
+                      you a code to reset your password.
                     </p>
                   </div>
 
@@ -139,14 +171,13 @@ const LoginPage = () => {
                         <span className="label-text">Email</span>
                       </label>
                       <input
-                        autoFocus="a"
+                        autoFocus
                         type="email"
                         placeholder="example@gmail.com"
                         className="input input-bordered w-full"
-                        value={loginData.email}
+                        value={forgotData.email}
                         onChange={(e) =>
-                          setLoginData({
-                            ...loginData,
+                          setForgotData({
                             email: e.target.value,
                           })
                         }
@@ -154,49 +185,31 @@ const LoginPage = () => {
                       />
                     </div>
 
-                    {/* Password */}
-                    <div className="from-control w-full space-y-2">
-                      <label className="label">
-                        <span className="label-text">Password</span>
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="Enter your Password"
-                        className="input input-bordered w-full"
-                        value={loginData.password}
-                        onChange={(e) =>
-                          setLoginData({
-                            ...loginData,
-                            password: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className=" mb-4">
-                      <p className="text-sm md:text-base">
-                        Don't remember your password?{" "}
+                    <div className="mb-4">
+                      <p className="text-sm md:text-lg">
+                        Remember your password?{" "}
                         <Link
-                          to="/forgot-password"
+                          to="/login"
                           className="text-primary hover:underline"
                         >
-                          Forgot password
+                          Sign in
                         </Link>
                       </p>
                     </div>
+
                     <button className="btn btn-primary w-full" type="submit">
-                      {loginPending ? (
+                      {codePending ? (
                         <>
                           <span className="loading loading-spinner loading-xs"></span>
-                          Signing in...
+                          sending...
                         </>
                       ) : (
-                        "Sign in"
+                        "Send code"
                       )}
                     </button>
 
                     <div className="text-center mt-2">
-                      <p className="text-sm md:text-base">
+                      <p className="text-sm md:text-lg">
                         Don't have an account?{" "}
                         <Link
                           to="/signup"
@@ -213,7 +226,7 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* Login form part right */}
+        {/* Forgot Password form part right */}
         <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
           <div className="max-w-md p-8">
             {/* image div comes */}
@@ -240,4 +253,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;

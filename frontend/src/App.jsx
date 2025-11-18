@@ -12,6 +12,7 @@ import useAuthUser from "./hooks/useAuthUser.js";
 import Layout from "./component/Layout.jsx";
 import { useThemeStore } from "./Store/useThemeStore.js";
 import FriendElement from "./pages/FriendElement.jsx";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 
 const App = () => {
   const { authUser, isLoading } = useAuthUser();
@@ -22,7 +23,7 @@ const App = () => {
   if (isLoading) return <PageLoder />;
 
   return (
-    <div className="h-screen" data-theme={theme}>
+    <div className="h-screen w-screen" data-theme={theme}>
       <Routes>
         <Route
           path="/"
@@ -57,6 +58,16 @@ const App = () => {
           }
         />
         <Route
+          path="/forgot-password"
+          element={
+            !isAuthenticated ? (
+              <ForgotPasswordPage />
+            ) : (
+              <Navigate to={!isOnboarded ? "/onboarding" : "/"} />
+            )
+          }
+        />
+        <Route
           path="/notification"
           element={
             isAuthenticated && isOnboarded ? (
@@ -68,6 +79,7 @@ const App = () => {
             )
           }
         />
+
         <Route
           path="/call/:id"
           element={

@@ -169,5 +169,52 @@ export const getOutgoingFriendRequest = async (req, res) => {
   }
 };
 
-// 68f3c8daf1e13611cda8d3c6
-// 68f204ff49bade5faa6b9022
+//changing password with user current password
+export const changePasswordUser = async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body;
+
+    if (!email || !newPassword || !currentPassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All Fields are required!" });
+    }
+    if (newPassword.length < 6 || currentPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const existUser = await User.findOne({ email });
+
+    if (!existUser) {
+      return res.status(401).json({
+        success: false,
+        message: "User Not found somthing wents wrong",
+      });
+    }
+    const isCorrectPass = await existUser.matchPassword(currentPassword);
+    if (!isCorrectPass) {
+      return res.status(401).json({
+        success: false,
+        message: "Your Current password not matched",
+      });
+    }
+
+    if (currentPassword === newPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "New password cannot be the same as your current password.",
+      });
+    }
+    existUser.password = newPassword;
+    existUser.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Password Change successfully" });
+  } catch (err) {
+    console.log("Error while Changing password : ", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

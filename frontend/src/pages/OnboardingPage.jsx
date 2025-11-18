@@ -47,7 +47,7 @@ const OnboardingPage = () => {
     const randomAvatar = `/avatars/AV${index}.png`;
 
     setFormState({ ...formState, profilePic: randomAvatar });
-    toast.success("Random Profile Pic generated!");
+    toast.success("Random Profile Pic generated!", { duration: 800 });
   };
 
   return (
@@ -115,8 +115,9 @@ const OnboardingPage = () => {
                 <span className="label-text">Bio</span>
               </label>
               <textarea
+                autoFocus
                 name="bio"
-                className="input input-bordered w-full h-24"
+                className="input input-bordered rounded-2xl w-full h-24 "
                 placeholder="Tell others about yourself and your language learning goals"
                 value={formState.bio}
                 onChange={(e) =>
