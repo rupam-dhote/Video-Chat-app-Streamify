@@ -1,5 +1,5 @@
 export const Verification_Email_Template = `
-  <<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -68,27 +68,22 @@ export const Verification_Email_Template = `
       }
 
       .logo-box {
-        height: 3rem;
+        text-align: center;
         padding: 1rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
       }
-
       .logo-box img {
         width: 50px;
         height: 50px;
-        display: block;
+      }
+      .logo-item {
+        display: inline-block;
+        vertical-align: middle;
       }
 
       .logo-text {
         font-size: 2.5rem;
-        text-align: center;
         font-weight: bold;
-        background: linear-gradient(to right, #2ec217, #3ebc96);
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #3ebf2d;
       }
 
       .bg-same {
@@ -99,20 +94,19 @@ export const Verification_Email_Template = `
         .container {
           width: 100% !important;
           margin: 0 !important;
-          border-radius: 0 !important;
         }
 
         .logo-box {
-          padding: 0.7rem !important;
+          padding: 0.5rem !important;
         }
 
         .logo-box img {
-          width: 40px !important;
-          height: 40px !important;
+          width: 45px !important;
+          height: 45px !important;
         }
 
         .logo-text {
-          font-size: 2rem !important;
+          font-size: 1.8rem !important;
         }
 
         .header {
@@ -151,9 +145,12 @@ export const Verification_Email_Template = `
         <div class="logo-box">
           <img
             src="https://video-chat-app-streamify.onrender.com/logo-streamify.png"
+            class="logo-item"
           />
-          <h1 class="logo-text">Streamify</h1>
+
+          <span class="logo-item logo-text"> Streamify </span>
         </div>
+
         <div class="header">Verify Your Email</div>
       </div>
 
@@ -186,10 +183,11 @@ export const Verification_Email_Template = `
   </body>
 </html>
 
+
 `;
 
 export const Welcome_Email_Template = `
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -261,46 +259,47 @@ export const Welcome_Email_Template = `
         text-align: justify;
       }
       .flex-center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
       }
       .logo-box {
-        height: 3rem;
+        text-align: center; 
         padding: 1rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
       }
       .logo-box img {
         width: 50px;
         height: 50px;
-        display: block;
+      }
+
+      .logo-item {
+        display: inline-block; 
+        vertical-align: middle; 
       }
 
       .logo-text {
-        font-size: 2.5rem;
-        text-align: center;
+        font-size: 2rem;
         font-weight: bold;
-        background: linear-gradient(to right, #2ec217, #3ebc96);
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #2ec217;
       }
       .bg-same {
         background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
       }
 
-      
       @media only screen and (max-width: 500px) {
         .container {
           width: 100% !important;
           margin: 0 !important;
-          border-radius: 0 !important;
+        }
+        .logo-box img {
+          width: 45px !important;
+          height: 45px !important;
+        }
+        .logo-text {
+          font-size: 1.8rem !important;
         }
         .header {
           font-size: 22px !important;
-          padding: 18px !important;
         }
         .content {
           padding: 18px !important;
@@ -330,9 +329,12 @@ export const Welcome_Email_Template = `
         <div class="logo-box">
           <img
             src="https://video-chat-app-streamify.onrender.com/logo-streamify.png"
+            class="logo-item"
           />
-          <h1 class="logo-text">Streamify</h1>
+
+          <span class="logo-item logo-text"> Streamify </span>
         </div>
+
         <div class="header">Welcome to Streamify</div>
       </div>
 
@@ -463,27 +465,23 @@ export const Reset_Password_Email_Template = `
       }
 
       .logo-box {
-        height: 3rem;
+        text-align: center; /* center row items */
         padding: 1rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
       }
-
       .logo-box img {
         width: 50px;
         height: 50px;
-        display: block;
+      }
+
+      .logo-item {
+        display: inline-block; /* makes row-like layout */
+        vertical-align: middle; /* align logo + text */
       }
 
       .logo-text {
-        font-size: 2.5rem;
-        text-align: center;
+        font-size: 2rem;
         font-weight: bold;
-        background: linear-gradient(to right, #2ec217, #3ebc96);
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #2ec217;
       }
 
       .bg-same {
@@ -494,7 +492,6 @@ export const Reset_Password_Email_Template = `
         .container {
           width: 100% !important;
           margin: 0 !important;
-          border-radius: 0 !important;
         }
         .content {
           padding: 20px !important;
@@ -505,15 +502,12 @@ export const Reset_Password_Email_Template = `
           font-size: 20px !important;
           padding-bottom: 15px !important;
         }
-        .logo-box {
-          padding: 0.7rem !important;
-        }
-        .logo-box img {
-          width: 40px !important;
-          height: 40px !important;
-        }
         .logo-text {
           font-size: 1.8rem !important;
+        }
+        .logo-box img {
+          width: 45px !important;
+          height: 45px !important;
         }
         .reset-code {
           font-size: 20px !important;
@@ -537,9 +531,12 @@ export const Reset_Password_Email_Template = `
         <div class="logo-box">
           <img
             src="https://video-chat-app-streamify.onrender.com/logo-streamify.png"
+            class="logo-item"
           />
-          <h1 class="logo-text">Streamify</h1>
+
+          <span class="logo-item logo-text"> Streamify </span>
         </div>
+
         <div class="header">Reset Your Password</div>
       </div>
 
@@ -583,7 +580,9 @@ export const Reset_Password_Email_Template = `
       </div>
 
       <div class="footer">
-        <p> &copy; ${new Date().getFullYear()} Streamify. All rights reserved.</p>
+        <p>
+          &copy; ${new Date().getFullYear()} Streamify. All rights reserved.
+        </p>
       </div>
     </div>
   </body>

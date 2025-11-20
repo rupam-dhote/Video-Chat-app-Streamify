@@ -55,7 +55,7 @@ const OnboardingPage = ({ edit = false }) => {
   };
 
   return (
-    <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-base-100 flex items-center justify-center py-4">
       <div className="card bg-base-200 w-full max-w-3xl lg:max-w-4xl shadow-xl">
         <div className="card-body p-6 sm:p-7">
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">

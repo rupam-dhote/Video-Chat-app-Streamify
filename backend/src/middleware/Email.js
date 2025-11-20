@@ -49,7 +49,7 @@ export const sendResetPasswordEamil = async (email, verificationCode, name) => {
 
 export const senWelcomeEmail = async (email, name) => {
   try {
-    sendSMTPEmail = {
+    const sendSMTPEmail = {
       sender: { name: "Streamify", email: OFFICIAL_EMAIL }, // YES Gmail works
       replyTo: { email: OFFICIAL_EMAIL, name: "Streamify Support" },
       to: [{ email }],
