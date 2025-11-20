@@ -1,5 +1,6 @@
 import User from "../Models/User.js";
 import FriendRequest from "../Models/FriendRequest.js";
+import { upsertStreamUser } from "../lib/stream.js";
 
 //function to show recomendation
 export const getRecommendedUsers = async (req, res) => {
@@ -216,5 +217,65 @@ export const changePasswordUser = async (req, res) => {
   } catch (err) {
     console.log("Error while Changing password : ", err);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// function to Edit profile
+export const editProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const { fullName, bio, nativeLanguage, learningLanguage, location } =
+      req.body;
+
+    if (
+      !fullName ||
+      !bio ||
+      !nativeLanguage ||
+      !learningLanguage ||
+      !location
+    ) {
+      return res.status(400).json({
+        message: "All Fields Are Required",
+        missingFields: [
+          !fullName && "fullName",
+          !bio && "bio",
+          !nativeLanguage && "nativeLanguage",
+          !learningLanguage && "learningLanguage",
+          !location && "location",
+        ].filter(Boolean),
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        ...req.body,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+    //  stream user update
+    try {
+      await upsertStreamUser({
+        id: updatedUser._id.toString(),
+        name: updatedUser.fullName,
+        image: updatedUser.profilePic || "",
+      });
+      console.log(
+        `Stream User Updated after Profile Edit : ${updatedUser.fullName}`
+      );
+    } catch (err) {
+      console.error("Error while updating the Stream user : ", err);
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "Profile updated successfully" });
+  } catch (err) {
+    console.log("onBoarding Error : ", err);
+    res.status(500).json({ message: "Internal server Error" });
   }
 };

@@ -29,6 +29,11 @@ export const updateBio = async (bioData) => {
   return res.data;
 };
 
+export const editBio = async (bioData) => {
+  const res = await axiosInstance.put("/user/edit-profile", bioData);
+  return res.data;
+};
+
 export const getUserFriends = async () => {
   const res = await axiosInstance.get("/user/friends");
   return res.data;

@@ -3,6 +3,7 @@ import { protectRoute } from "../middleware/auth.middleware.js";
 import {
   acceptFriendRequest,
   changePasswordUser,
+  editProfile,
   getFriendRequest,
   getMyFriends,
   getOutgoingFriendRequest,
@@ -23,5 +24,6 @@ router.put("/friend-request/:id/accept", acceptFriendRequest);
 router.get("/friend-requests", getFriendRequest);
 router.get("/outgoing-friend-requests", getOutgoingFriendRequest);
 router.put("/change-password", changePasswordUser);
+router.put("/edit-profile", editProfile);
 
 export default router;

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import useRefetch from "../hooks/useRefetch";
 import {
   BellIcon,
+  Edit,
   KeyRound,
   LifeBuoy,
   LogOutIcon,
@@ -181,6 +182,15 @@ const Navbar = () => {
                         <KeyRound className="size-4 opacity-70" />
                         Reset Password
                       </label>
+                    </li>
+                    <li className="flex hover:bg-base-200 rounded-lg lg:hidden">
+                      <Link
+                        to={"/edit-profile"}
+                        className="flex items-center gap-2 cursor-pointer px-2 py-2"
+                      >
+                        <Edit className="size-4 opacity-70" />
+                        Edit Profile
+                      </Link>
                     </li>
 
                     <li className="flex hover:bg-base-200 rounded-lg sm:hidden">

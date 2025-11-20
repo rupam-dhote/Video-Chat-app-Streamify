@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useAuthUser from "../hooks/useAuthUser.js";
 import { useMutation } from "@tanstack/react-query";
-import { updateBio } from "../lib/api.js";
+import { editBio, updateBio } from "../lib/api.js";
 import toast from "react-hot-toast";
 import {
   CameraIcon,
@@ -9,13 +9,16 @@ import {
   Loader,
   MapPinIcon,
   ShuffleIcon,
+  Upload,
 } from "lucide-react";
 import { LANGUAGES } from "../constants/index.js";
 import useRefetch from "../hooks/useRefetch.js";
+import { useNavigate } from "react-router";
 
-const OnboardingPage = () => {
+const OnboardingPage = ({ edit = false }) => {
   const { authUser } = useAuthUser();
   const refetchMe = useRefetch();
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
     fullName: authUser?.fullName || "",
@@ -27,13 +30,14 @@ const OnboardingPage = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: updateBio,
-    onSuccess: () => {
-      toast.success("Profile onboarded successfully");
-      refetchMe("authUser");
+    mutationFn: edit ? editBio : updateBio,
+    onSuccess: (res) => {
+      toast.success(res.message);
+      edit ? navigate("/") : refetchMe("authUser");
     },
-    onError: (error) => {
-      toast.error(error?.response?.data?.message);
+    onError: (err) => {
+      toast.error(`${err.response.data.message}. Please try again!`);
+      console.log(err?.response?.data);
     },
   });
 
@@ -52,10 +56,10 @@ const OnboardingPage = () => {
 
   return (
     <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
-      <div className="card bg-base-200 w-full max-w-3xl shadow-xl">
-        <div className="card-body p-6 sm:p-8">
+      <div className="card bg-base-200 w-full max-w-3xl lg:max-w-4xl shadow-xl">
+        <div className="card-body p-6 sm:p-7">
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">
-            Complete your profile
+            {edit ? "Edit your profile" : "Complete your profile"}
           </h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* profile pic container */}
@@ -146,7 +150,7 @@ const OnboardingPage = () => {
                   }}
                   className="select select-bordered w-full"
                 >
-                  <option value="">Slecte Your Native Language</option>
+                  <option value="">Select Your Native Language</option>
                   {LANGUAGES.map((lang) => (
                     <option key={`native-${lang}`} value={lang.toLowerCase()}>
                       {lang}
@@ -170,7 +174,7 @@ const OnboardingPage = () => {
                   }}
                   className="select select-bordered w-full"
                 >
-                  <option value="">Slecte language you're learning</option>
+                  <option value="">Select language you're learning</option>
                   {LANGUAGES.map((lang) => (
                     <option key={`native-${lang}`} value={lang.toLowerCase()}>
                       {lang}
@@ -207,13 +211,17 @@ const OnboardingPage = () => {
             >
               {!isPending ? (
                 <>
-                  <GlobeIcon className="size-5 mr-2" />
-                  Complete Onboarding
+                  {edit ? (
+                    <Upload className="size-5 mr-2" />
+                  ) : (
+                    <GlobeIcon className="size-5 mr-2" />
+                  )}
+                  {edit ? "Update profile" : "Complete Onboarding"}
                 </>
               ) : (
                 <>
                   <Loader className=" animate-spin size-5 mr-2" />
-                  Onboarding...
+                  {edit ? "Updating..." : "Onboarding..."}
                 </>
               )}
             </button>

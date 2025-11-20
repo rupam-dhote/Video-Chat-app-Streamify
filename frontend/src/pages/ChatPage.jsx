@@ -64,7 +64,48 @@ const ChatPage = () => {
     };
 
     initchat();
+
+    return () => {
+      // disconnect client on unmount to avoid leaks
+      if (chatClient) {
+        chatClient.disconnectUser().catch(() => {});
+      }
+    };
   }, [tokenData, authUser, userID]);
+
+  useEffect(() => {
+    // Handler will open all links in same tab (unless modifier key used)
+    const handler = (e) => {
+      // respect modifier keys and non-left clicks (allow user to open in new tab/window)
+      if (e.defaultPrevented) return;
+      if (e.button !== 0) return; // not left click
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      const a = e.target.closest && e.target.closest("a");
+      if (!a) return;
+
+      const href = a.getAttribute("href");
+      if (!href) return;
+
+      // If you want only call links open in same tab, replace check below with: if (!href.includes("/call/")) return;
+      // For now we open ALL links in same tab (as you requested earlier)
+      if (!href.includes("/call/")) return;
+
+      e.preventDefault();
+
+      // resolve relative hrefs
+      const url = href.startsWith("http")
+        ? href
+        : `${window.location.origin}${href}`;
+
+      // use assign to preserve history
+      window.location.assign(url);
+    };
+
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
+
   const handleVideoCall = () => {
     if (channel) {
       const callUrl = `${window.location.origin}/call/${channel.id}`;
@@ -77,11 +118,14 @@ const ChatPage = () => {
   };
 
   if (loading || !chatClient || !channel) return <ChatLoader />;
+
+  // to open call page  in same link tab
+
   return (
-    <div className="h-[92vh]">
+    <div className="h-[90.5vh]">
       <Chat client={chatClient}>
         <Channel channel={channel}>
-          <div className="w-full relative">
+          <div className="w-full  relative ">
             <CallButton handleVideoCall={handleVideoCall} />
             <Window>
               <ChannelHeader />

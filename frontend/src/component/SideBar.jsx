@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
-import { BellIcon, HomeIcon, LifeBuoy, UsersIcon } from "lucide-react";
+import { BellIcon, HomeIcon, LifeBuoy, Pencil, UsersIcon } from "lucide-react";
 
 const SideBar = () => {
   const { authUser } = useAuthUser();
@@ -49,11 +49,21 @@ const SideBar = () => {
       {/* USER PROFILE SECTION */}
       <div className="p-4 border-t border-base-300 mt-auto">
         <div className="flex items-center gap-3">
-          <div className="avatar">
-            <div className="w-10 rounded-full">
-              <img src={authUser?.profilePic} alt="User Avatar" />
+          <Link to={"/edit-profile"}>
+            <div className="avatar group cursor-pointer">
+              <div className="w-10 rounded-full overflow-hidden relative">
+                <img
+                  src={authUser?.profilePic}
+                  alt="User Avatar"
+                  className="w-full h-full object-cover "
+                />
+                <div className=" absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <Pencil className="w-4 h-4 text-white" />
+                </div>
+              </div>
             </div>
-          </div>
+          </Link>
+
           <div className="flex-1">
             <p className="font-semibold text-sm">{authUser?.fullName}</p>
             <p className="text-xs text-success flex items-center gap-1">

@@ -11,7 +11,6 @@ import {
   StreamTheme,
   StreamVideo,
   StreamVideoClient,
-  useCall,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -50,8 +49,18 @@ const CallPage = () => {
         });
 
         const callInstance = videoClient.call("default", callId);
+        await callInstance.update({
+          settings_override: {
+            recording: {
+              enabled: false,
+              mode: "disabled", // REQUIRED BY STREAM
+            },
+          },
+        });
 
-        await callInstance.join({ create: true });
+        await callInstance.join({
+          create: true,
+        });
 
         console.log("Join call successfully");
 

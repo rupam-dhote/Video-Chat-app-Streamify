@@ -23,7 +23,7 @@ const App = () => {
   if (isLoading) return <PageLoder />;
 
   return (
-    <div className="h-screen w-screen" data-theme={theme}>
+    <div className="h-screen" data-theme={theme}>
       <Routes>
         <Route
           path="/"
@@ -74,6 +74,16 @@ const App = () => {
               <Layout showSidebar>
                 <NotificationPage />
               </Layout>
+            ) : (
+              <Navigate to={isAuthenticated ? "/onboarding" : "/login"} />
+            )
+          }
+        />
+        <Route
+          path="/edit-profile"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <OnboardingPage edit />
             ) : (
               <Navigate to={isAuthenticated ? "/onboarding" : "/login"} />
             )

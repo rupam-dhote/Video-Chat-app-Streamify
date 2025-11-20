@@ -191,7 +191,9 @@ export const onboard = async (req, res) => {
     } catch (err) {
       console.error("Error while updating the Stream user : ", err);
     }
-    res.status(200).json({ success: true, user: updatedUser });
+    res
+      .status(200)
+      .json({ success: true, message: "Profile onboarded successfully" });
   } catch (err) {
     console.log("onBoarding Error : ", err);
     res.status(500).json({ message: "Internal server Error" });
