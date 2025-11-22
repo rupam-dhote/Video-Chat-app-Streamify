@@ -33,7 +33,7 @@ const CallPage = () => {
 
   useEffect(() => {
     const initCall = async () => {
-      if (!tokenData.token || !authUser || !callId) return;
+      if (!tokenData?.token || !authUser || !callId) return;
       try {
         console.log("Initializing stream video client...");
         const user = {
@@ -45,18 +45,10 @@ const CallPage = () => {
         const videoClient = new StreamVideoClient({
           apiKey: STREAM_API_KEY,
           user,
-          token: tokenData.token,
+          token: tokenData?.token,
         });
 
         const callInstance = videoClient.call("default", callId);
-        await callInstance.update({
-          settings_override: {
-            recording: {
-              enabled: false,
-              mode: "disabled", // REQUIRED BY STREAM
-            },
-          },
-        });
 
         await callInstance.join({
           create: true,
