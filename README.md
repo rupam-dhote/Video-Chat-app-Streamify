@@ -1,4 +1,11 @@
 # Streamify 🌍💬
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=4ADE80&center=true&vCenter=true&width=700&lines=Streamify;Learn+Languages+Through+Real+Conversations;Chat+%7C+Video+Call+%7C+Language+Exchange" />
+</p>
+
+<p align="center">
+<img src="https://skillicons.dev/icons?i=react,nodejs,express,mongodb,tailwind" />
+</p>
 
 Streamify is a real-time language learning platform where users can connect with people around the world and practice new languages through **chat and video calls**.
 
